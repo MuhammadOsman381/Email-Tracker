@@ -6,18 +6,17 @@ const pixel = Buffer.from(
     "base64"
 );
 
-type Params = {
-    params: {
-        email_id: string;
-    };
-};
+export async function GET(
+    request: NextRequest,
+    context: { params: Promise<{ email_id: string }> }
+) {
+    const { email_id } = await context.params;
 
-export async function GET(request: NextRequest, { params }: Params) {
-    const { email_id } = params;
     await sendEmail(
         "mosman257@gmail.com",
         `Your email ${email_id} opened`
     );
+
     return new NextResponse(pixel, {
         headers: {
             "Content-Type": "image/png",
