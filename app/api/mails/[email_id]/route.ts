@@ -12,10 +12,14 @@ export async function GET(
 ) {
     const { email_id } = await context.params;
 
-    await sendEmail(
-        "mosman257@gmail.com",
-        `Your email ${email_id} opened`
-    );
+    const userAgent = request.headers.get("user-agent") || "";
+
+    if (!userAgent.includes("GoogleImageProxy")) {
+        await sendEmail(
+            "mosman257@gmail.com",
+            `Your email ${email_id} opened`
+        );
+    }
 
     return new NextResponse(pixel, {
         headers: {
